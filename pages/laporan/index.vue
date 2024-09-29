@@ -22,9 +22,12 @@
           <p style="color: white;">End Date</p>
           <input v-model="tgl_akhir" type="date" class="form-control form-control-lg">
         </div>
+        <div class="col-lg-1 justify-content-center align-items-end ">
+          <button type="submit" class="btn btn-primary mt-5">Cari</button>
+        </div>
       </div>
     </form>
-    <div class=" container pb-5">
+    <div class="container pb-5">
       <table border="1" style="width:100%; text-align: center; color: white;" class="border-white">
         <tr class="b">
           <th>No</th>
@@ -34,7 +37,6 @@
           <th>Tingkat</th>
           <th>Jurusan</th>
           <th>Kelas</th>
-
         </tr>
         <tr v-for="(visitor, i) in visitors" :key="i">
           <td>{{ i + 1 }}</td>
@@ -57,18 +59,21 @@ const tgl_awal = ref('')
 const tgl_akhir = ref('')
 
 const getPresensi = async () => {
-  let { data, error } = await supabase
-    // .from('tampildata').select('*')
-    .from('presensi').select('*,keterangan(*),siswa(*)')
-  if (data) visitors.value = data
-}
-
-const cariPresensi = async () => {
-  const { data, error } = await supabase
-    .from('presensi')
-    .select('*')
-    .rangeLt('tanggal', [tgl_awal, tgl_akhir]
-    )
+  if (tgl_awal.value && tgl_akhir.value) {
+    let { data, error } = await supabase
+      .from('presensi')
+      .select('*,keterangan(*),siswa(*)')
+      .gte('tanggal', tgl_awal.value)
+      .lte('tanggal', tgl_akhir.value)
+    if (data) visitors.value = data
+    if (error) console.error(error)
+  } else {
+    let { data, error } = await supabase
+      .from('presensi')
+      .select('*,keterangan(*),siswa(*)')
+    if (data) visitors.value = data
+    if (error) console.error(error)
+  }
 }
 
 onMounted(() => {
@@ -77,7 +82,7 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.btn {
+.bck {
   text-decoration: none;
 }
 
@@ -86,7 +91,7 @@ onMounted(() => {
 }
 
 .atas {
-  min-height: max-content;
+  min-height: 10rem;
   background: rgb(26, 26, 26);
 }
 
