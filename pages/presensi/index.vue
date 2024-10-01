@@ -1,74 +1,63 @@
 <template>
-  <!DOCTYPE html>
-  <html lang="en">
 
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-  </head>
-
-  <body>
-    <div class="container-fluid">
-      <div class="row d-flex justify-content-center pt-5">
-        <div class="col-lg-8">
-          <form @submit.prevent="kirimData">
-            <div class="mb-4">
-              <select v-model="form.tingkat" class="jurusan form-control form-control-lg rounded-4 fs-3 text-center">
-                <option value="">Tingkat</option>
-                <option value="10">10</option>
-                <option value="11">11</option>
-                <option value="12">12</option>
+  <div class="container-fluid">
+    <div class="row d-flex justify-content-center pt-5">
+      <div class="col-lg-8">
+        <form @submit.prevent="kirimData">
+          <div class="mb-4">
+            <select v-model="form.tingkat" class="jurusan form-control form-control-lg rounded-4 fs-3 text-center">
+              <option value="">Tingkat</option>
+              <option value="10">10</option>
+              <option value="11">11</option>
+              <option value="12">12</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <div class="row mb-5">
+              <div class="col-md-6">
+                <select v-model="form.jurusan" :disabled="form.tingkat == ''"
+                  class="jurusan form-control form-control-lg rounded-4 fs-3 text-center">
+                  <option value="">JURUSAN</option>
+                  <option v-for="(jurus, i) in op" :key="i" :value="jurus.id">{{ jurus.nama }}</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <select @change="cek" class="jurusan form-control form-control-lg rounded-4 fs-3 text-center">
+                  <option value="">KELAS</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class=" col d-flex justify-content-center">
+              <select v-model="form.siswa" class="form-control form-control nama fs-3 text-center mb-4">
+                <option value="">Nama</option>
+                <option v-for="(member, i) in members" :key="i" :value="member.id">{{ member.nama }}</option>
               </select>
             </div>
-            <div class="mb-3">
-              <div class="row mb-5">
-                <div class="col-md-6">
-                  <select v-model="form.jurusan" :disabled="form.tingkat == ''"
-                    class="jurusan form-control form-control-lg rounded-4 fs-3 text-center">
-                    <option value="">JURUSAN</option>
-                    <option v-for="(jurus, i) in op" :key="i" :value="jurus.id">{{ jurus.nama }}</option>
-                  </select>
-                </div>
-                <div class="col-md-6">
-                  <select @change="cek" class="jurusan form-control form-control-lg rounded-4 fs-3 text-center">
-                    <option value="">KELAS</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                  </select>
-                </div>
-              </div>
+            <div class="col d-flex justify-content-center">
+              <select v-model="form.keterangan" :disabled="form.jurusan == ''"
+                class="form-control form-control nama fs-3 text-center mb-5">
+                <option value="">Keterangan</option>
+                <option v-for="(item, i) in objectives" :key="i" :value="item.id">{{ item.nama }}</option>
+              </select>
             </div>
-            <div>
-              <div class=" col d-flex justify-content-center">
-                <select v-model="form.siswa" class="form-control form-control nama fs-3 text-center mb-4">
-                  <option value="">Nama</option>
-                  <option v-for="(member, i) in members" :key="i" :value="member.id">{{ member.nama }}</option>
-                </select>
-              </div>
-              <div class="col d-flex justify-content-center">
-                <select v-model="form.keterangan" :disabled="form.jurusan == ''"
-                  class="form-control form-control nama fs-3 text-center mb-5">
-                  <option value="">Keterangan</option>
-                  <option v-for="(item, i) in objectives" :key="i" :value="item.id">{{ item.nama }}</option>
-                </select>
-              </div>
-              <div class="col d-flex justify-content-center">
-                <button type="submit" class="btn btn-success krm">Kirim</button>
-              </div>
+            <div class="col d-flex justify-content-center">
+              <button type="submit" class="btn btn-success krm">Kirim</button>
             </div>
-          </form>
-        </div>
+          </div>
+        </form>
       </div>
-      <nuxt-link to="/halamanUtama">
-        <button type="button" class="btn btn-dark bck mt-5 mb-5 border-white">Kembali</button>
-      </nuxt-link>
     </div>
-  </body>
+    <nuxt-link to="/halamanUtama">
+      <button type="button" class="btn btn-dark bck mt-5 mb-5 border-white">Kembali</button>
+    </nuxt-link>
+  </div>
 
-  </html>
 
 </template>
 

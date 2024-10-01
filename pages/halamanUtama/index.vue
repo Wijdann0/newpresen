@@ -1,46 +1,34 @@
 <template>
-  <!DOCTYPE html>
-  <html lang="en">
 
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-  </head>
-
-  <body>
-    <div class="container-fluid hei">
-      <div class="row my-5 d-flex justify-content-around mt-3 atas">
-        <div class="col-lg-4 mb-5">
-          <nuxt-link to="/presensi" class="text-decoration-none">
-            <div class="card bg-isiPresensi rounded-5 text-light">
-              <div class="card-body d-flex justify-content-center align-items-center">
-                <h2 class="">Isi Presensi</h2>
-              </div>
+  <div class="container-fluid hei">
+    <div class="row my-5 d-flex justify-content-around mt-3 atas">
+      <div class="col-lg-4 mb-5">
+        <nuxt-link to="/presensi" class="text-decoration-none">
+          <div class="card bg-isiPresensi rounded-5 text-light">
+            <div class="card-body d-flex justify-content-center align-items-center">
+              <h2 class="">Isi Presensi</h2>
             </div>
-          </nuxt-link>
-        </div>
-        <div class="col-lg-4 mb-5">
-          <nuxt-link to="/laporan" class="text-decoration-none">
-            <div class="card bg-laporanMingguan rounded-5 text-light">
-              <div class="card-body d-flex justify-content-center align-items-center">
-                <h2 class="">Laporan</h2>
-              </div>
-            </div>
-          </nuxt-link>
-        </div>
+          </div>
+        </nuxt-link>
       </div>
-      <div class="row pb-3 ">
-        <div class="col p-3">
-          <nuxt-link to="/log/logout">
-            <button class="btn btn-dark bck mt-5 mb-5 border-white">LogOut</button>
-          </nuxt-link>
-        </div>
+      <div class="col-lg-4 mb-5">
+        <nuxt-link to="/laporan" class="text-decoration-none">
+          <div class="card bg-laporanMingguan rounded-5 text-light">
+            <div class="card-body d-flex justify-content-center align-items-center">
+              <h2 class="">Laporan</h2>
+            </div>
+          </div>
+        </nuxt-link>
       </div>
     </div>
-  </body>
-
-  </html>
+    <div class="row pb-3 ">
+      <div class="col p-3">
+        <nuxt-link to="/log/logout">
+          <button class="btn btn-dark bck mt-5 mb-5 border-white">LogOut</button>
+        </nuxt-link>
+      </div>
+    </div>
+  </div>
 
 </template>
 <style scoped>
