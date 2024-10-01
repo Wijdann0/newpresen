@@ -1,45 +1,41 @@
 <template>
-  <!DOCTYPE html>
- 
-    <div class="container-fluid psh">
-      <div class="row text-center pp">
-        <div class="col">
-          <h1 class="text-white">Presensi Kelas</h1>
-        </div>
+  <div class="container-fluid psh">
+    <div class="row text-center pp">
+      <div class="col">
+        <h1 class="text-white">Presensi Kelas</h1>
       </div>
-      <div class="row justify-content-center ps">
-        <div class="col-lg-6 d-flex justify-content-center">
-          <div class="card rounded-5 text-center pt-4">
-            <h3 class="text-white">Login</h3>
-            <div class="card-body d-flex justify-content-center pt-5">
-              <form @submit.prevent="log">
-                <label for="exampleInputEmail"></label>
-                <input v-model="email" type="email" class="form-control form-control-lg rounded-3 akn text-center"
-                  id="exampleInputEmail" placeholder="Email">
-                <label for="exampleInputPassword"></label>
-                <input v-model="password" type="password" class="form-control form-control-lg rounded-3 akn text-center"
-                  id="exampleInputPassword" placeholder="Password">
-                <button class="btn btn-success" type="submit">Login</button>
-              </form>
-            </div>
+    </div>
+    <div class="row justify-content-center ps">
+      <div class="col-lg-6 d-flex justify-content-center">
+        <div class="card rounded-5 text-center pt-4">
+          <h3 class="text-white">Login</h3>
+          <div class="card-body d-flex justify-content-center pt-5">
+            <form @submit.prevent="log">
+              <label for="exampleInputEmail"></label>
+              <input v-model="email" type="email" class="form-control form-control-lg rounded-3 akn text-center"
+                id="exampleInputEmail" placeholder="Email">
+              <label for="exampleInputPassword"></label>
+              <input v-model="password" type="password" class="form-control form-control-lg rounded-3 akn text-center"
+                id="exampleInputPassword" placeholder="Password">
+              <button class="btn btn-success" type="submit">Login</button>
+            </form>
           </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col text-white text-center pb-5">
-          <p>&copy; CopyRightBy@Di-Tech</p>
-        </div>
-      </div>
-      <div class="row kbl">
-        <div class="col-lg-3">
-          <nuxt-link to="/">
-            <button class="btn btn-light">Kembali</button>
-          </nuxt-link>
-        </div>
+    </div>
+    <div class="row">
+      <div class="col text-white text-center pb-5">
+        <p>&copy; CopyRightBy@Di-Tech</p>
       </div>
     </div>
-
-
+    <div class="row kbl">
+      <div class="col-lg-3">
+        <nuxt-link to="/">
+          <button class="btn btn-light">Kembali</button>
+        </nuxt-link>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>

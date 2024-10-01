@@ -12,11 +12,11 @@
               <option value="12">12</option>
             </select>
           </div>
-          <div class="mb-3">
+          <div class="mb-4">
             <div class="row mb-5">
               <div class="col-md-6">
                 <select v-model="form.jurusan" :disabled="form.tingkat == ''"
-                  class="jurusan form-control form-control-lg rounded-4 fs-3 text-center">
+                  class="jurusan form-control form-control-lg rounded-4 fs-3 text-center ">
                   <option value="">JURUSAN</option>
                   <option v-for="(jurus, i) in op" :key="i" :value="jurus.id">{{ jurus.nama }}</option>
                 </select>
@@ -32,16 +32,16 @@
               </div>
             </div>
           </div>
-          <div>
-            <div class=" col d-flex justify-content-center">
-              <select v-model="form.siswa" class="form-control form-control nama fs-3 text-center mb-4">
+          <div class="row">
+            <div class=" col-lg-12 d-flex justify-content-center">
+              <select v-model="form.siswa" class="form-control form-control-lg nama fs-3 text-center mb-5">
                 <option value="">Nama</option>
                 <option v-for="(member, i) in members" :key="i" :value="member.id">{{ member.nama }}</option>
               </select>
             </div>
-            <div class="col d-flex justify-content-center">
+            <div class="col-lg-12 d-flex justify-content-center">
               <select v-model="form.keterangan" :disabled="form.jurusan == ''"
-                class="form-control form-control nama fs-3 text-center mb-5">
+                class="form-control form-control-lg nama fs-3 text-center mb-5">
                 <option value="">Keterangan</option>
                 <option v-for="(item, i) in objectives" :key="i" :value="item.id">{{ item.nama }}</option>
               </select>
