@@ -1,208 +1,75 @@
-<!-- <template>
-  <div class="container-fluid">
-    <div class="row d-flex justify-content-center pt-5">
-      <div class="col-lg-8">
-        <form @submit.prevent="kirimData">
-          <div class="mb-4">
-            <select v-model="form.tingkat" class="jurusan form-control form-control-lg rounded-4 fs-3 text-center">
-              <option value="">Tingkat</option>
-              <option value="10">10</option>
-              <option value="11">11</option>
-              <option value="12">12</option>
-            </select>
-          </div>
-          <div class="mb-3">
-            <div class="row mb-5">
-              <div class="col-md-6">
-                <select v-model="form.jurusan" :disabled="form.tingkat == ''"
-                  class="jurusan form-control form-control-lg rounded-4 fs-3 text-center">
-                  <option value="">JURUSAN</option>
-                  <option v-for="(jurus, i) in op" :key="i" :value="jurus.id">{{ jurus.nama }}</option>
-                </select>
-              </div>
-              <div class="col-md-6">
-                <select @change="cek" class="jurusan form-control form-control-lg rounded-4 fs-3 text-center">
-                  <option value="">KELAS</option>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                </select>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div class=" col d-flex justify-content-center">
-              <select v-model="form.siswa" class="form-control form-control nama fs-3 text-center mb-4">
-                <option value="">Nama</option>
-                <option v-for="(member, i) in members" :key="i" :value="member.id">{{ member.nama }}</option>
-              </select>
-            </div>
-            <div class="col d-flex justify-content-center">
-              <select v-model="form.keterangan" :disabled="form.jurusan == ''"
-                class="form-control form-control nama fs-3 text-center mb-5">
-                <option value="">Keterangan</option>
-                <option v-for="(item, i) in objectives" :key="i" :value="item.id">{{ item.nama }}</option>
-              </select>
-            </div>
-            <div class="col d-flex justify-content-center">
-              <button type="submit" class="btn btn-success krm">Kirim</button>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-    <nuxt-link to="/halamanUtama">
-      <button type="button" class="btn btn-dark bck mt-5 mb-5 border-white">Kembali</button>
-    </nuxt-link>
-  </div>
-</template>
-
-
-<script setup>
-const supabase = useSupabaseClient()
-
-const kelas = ref([])
-const members = ref([])
-const objectives = ref([])
-const op = ref([])
-
-const form = ref({
-  siswa: "",
-  tingkat: "",
-  jurusan: "",
-  kelas: "",
-  keterangan: ""
-})
-
-async function cek(event) {
-  form.value.kelas = event.target.value
-  console.log(form.value)
-  if (form.value != '') {
-    let { data, error } = await supabase
-      .from('siswa')
-      .select('*')
-      .eq('tingkat', form.value.tingkat)
-      .eq('jurusan', form.value.jurusan)
-      .eq('kelas', form.value.kelas)
-    if (data) {
-      console.log(error)
-      members.value = data
-    }
-  }
-}
-
-const getSiswa = async () => {
-  const { data, error } = await supabase
-    .from('siswa')
-    .select('*')
-  if (data) members.value = data
-}
-
-const getKelas = async () => {
-  const { data, error } = await supabase
-    .from('siswa')
-    .select('*, kelas')
-  if (data) kelas.value = data
-}
-const getKeterangan = async () => {
-  const { data, error } = await supabase
-    .from('keterangan')
-    .select('*')
-  if (data) objectives.value = data
-}
-
-const kirimData = async () => {
-  console.log(form.value)
-  const { error } = await supabase
-    .from('presensi')
-    .insert([
-      {
-        siswa: form.value.siswa,
-        keterangan: form.value.keterangan,
-        jurusan: form.value.jurusan
-      }
-    ])
-  if (!error) {
-    alert('Presensi berhasil!')
-  }
-}
-
-const getJurusan = async () => {
-  console.log(op.value)
-  const { data, error } = await supabase
-    .from('jurusan')
-    .select("*")
-  if (data) op.value = data
-}
-
-onMounted(() => {
-  getSiswa()
-  getKelas()
-  getKeterangan()
-  getJurusan()
-})
-</script> -->
-
-
 <template>
-  <div class="container-fluid">
-    <div class="row d-flex justify-content-center pt-5">
-      <div class="col-lg-8">
-        <form @submit.prevent="kirimData">
-          <div class="mb-4">
-            <select v-model="form.tingkat" class="jurusan form-control form-control-lg rounded-4 fs-3 text-center">
-              <option value="">Tingkat</option>
-              <option value="10">10</option>
-              <option value="11">11</option>
-              <option value="12">12</option>
-            </select>
-          </div>
-          <div class="mb-3">
-            <div class="row mb-5">
-              <div class="col-md-6">
-                <select v-model="form.jurusan" :disabled="form.tingkat == ''"
-                  class="jurusan form-control form-control-lg rounded-4 fs-3 text-center">
-                  <option value="">JURUSAN</option>
-                  <option v-for="(jurus, i) in op" :key="i" :value="jurus.id">{{ jurus.nama }}</option>
-                </select>
-              </div>
-              <div class="col-md-6">
-                <select @change="cek" class="jurusan form-control form-control-lg rounded-4 fs-3 text-center">
-                  <option value="">KELAS</option>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                </select>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div class=" col d-flex justify-content-center">
-              <select v-model="form.siswa" class="form-control form-control nama fs-3 text-center mb-4">
-                <option value="">Nama</option>
-                <option v-for="(member, i) in members" :key="i" :value="member.id">{{ member.nama }}</option>
+  <!DOCTYPE html>
+  <html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  </head>
+
+  <body>
+    <div class="container-fluid">
+      <div class="row d-flex justify-content-center pt-5">
+        <div class="col-lg-8">
+          <form @submit.prevent="kirimData">
+            <div class="mb-4">
+              <select v-model="form.tingkat" class="jurusan form-control form-control-lg rounded-4 fs-3 text-center">
+                <option value="">Tingkat</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
               </select>
             </div>
-            <div class="col d-flex justify-content-center">
-              <select v-model="form.keterangan" :disabled="form.jurusan == ''"
-                class="form-control form-control nama fs-3 text-center mb-5">
-                <option value="">Keterangan</option>
-                <option v-for="(item, i) in objectives" :key="i" :value="item.id">{{ item.nama }}</option>
-              </select>
+            <div class="mb-3">
+              <div class="row mb-5">
+                <div class="col-md-6">
+                  <select v-model="form.jurusan" :disabled="form.tingkat == ''"
+                    class="jurusan form-control form-control-lg rounded-4 fs-3 text-center">
+                    <option value="">JURUSAN</option>
+                    <option v-for="(jurus, i) in op" :key="i" :value="jurus.id">{{ jurus.nama }}</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <select @change="cek" class="jurusan form-control form-control-lg rounded-4 fs-3 text-center">
+                    <option value="">KELAS</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                  </select>
+                </div>
+              </div>
             </div>
-            <div class="col d-flex justify-content-center">
-              <button type="submit" class="btn btn-success krm">Kirim</button>
+            <div>
+              <div class=" col d-flex justify-content-center">
+                <select v-model="form.siswa" class="form-control form-control nama fs-3 text-center mb-4">
+                  <option value="">Nama</option>
+                  <option v-for="(member, i) in members" :key="i" :value="member.id">{{ member.nama }}</option>
+                </select>
+              </div>
+              <div class="col d-flex justify-content-center">
+                <select v-model="form.keterangan" :disabled="form.jurusan == ''"
+                  class="form-control form-control nama fs-3 text-center mb-5">
+                  <option value="">Keterangan</option>
+                  <option v-for="(item, i) in objectives" :key="i" :value="item.id">{{ item.nama }}</option>
+                </select>
+              </div>
+              <div class="col d-flex justify-content-center">
+                <button type="submit" class="btn btn-success krm">Kirim</button>
+              </div>
             </div>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
+      <nuxt-link to="/halamanUtama">
+        <button type="button" class="btn btn-dark bck mt-5 mb-5 border-white">Kembali</button>
+      </nuxt-link>
     </div>
-    <nuxt-link to="/halamanUtama">
-      <button type="button" class="btn btn-dark bck mt-5 mb-5 border-white">Kembali</button>
-    </nuxt-link>
-  </div>
+  </body>
+
+  </html>
+
 </template>
 
 <script setup>
