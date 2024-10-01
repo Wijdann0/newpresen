@@ -1,52 +1,52 @@
 <template>
 
-    <div class="container-fluid atas mt-3">
-      <div class="row pt-3">
-        <div class="col-lg">
-          <nuxt-link to="/halamanUtama">
-            <button class="btn btn-dark bck mb-5 border-white">Kembali</button>
-          </nuxt-link>
-        </div>
-      </div>
-      <div class="row text-center bebas">
-        <div class="col-lg-12 text-white">
-          <h3>Presensi Bulanan</h3>
-        </div>
-      </div>
-      <form @submit.prevent="getPresensi">
-        <div class="row justify-content-end pb-5">
-          <div class="col-lg-2">
-            <p style="color: white;">Start Date</p>
-            <input v-model="tgl_awal" type="date" class="form-control form-control-lg">
-          </div>
-          <div class="col-lg-2">
-            <p style="color: white;">End Date</p>
-            <input v-model="tgl_akhir" type="date" class="form-control form-control-lg">
-          </div>
-          <div class="col-lg-1 justify-content-center align-items-end">
-            <button type="submit" class="btn btn-primary mt-5">Cari</button>
-          </div>
-        </div>
-      </form>
-      <div class="container pp">
-        <table border="1" style="width:100%; text-align: center; color: white;" class="border-white">
-          <tr class="b">
-            <th>No</th>
-            <th>Tanggal</th>
-            <th>Nama</th>
-            <th>Keterangan</th>
-            <th>Kelas</th>
-          </tr>
-          <tr v-for="(visitor, i) in visitors" :key="i">
-            <td>{{ i + 1 }}</td>
-            <td>{{ visitor.tanggal }}</td>
-            <td>{{ visitor.siswa.nama }}</td>
-            <td>{{ visitor.keterangan.nama }}</td>
-            <td>{{ visitor.siswa.tingkat }} {{ visitor.jurusan.nama }} {{ visitor.siswa.kelas }}</td>
-          </tr>
-        </table>
+  <div class="container-fluid atas mt-3">
+    <div class="row pt-3">
+      <div class="col-lg">
+        <nuxt-link to="/halamanUtama">
+          <button class="btn btn-dark bck mb-5 border-white">Kembali</button>
+        </nuxt-link>
       </div>
     </div>
+    <div class="row text-center bebas">
+      <div class="col-lg-12 text-white">
+        <h3>Presensi Bulanan</h3>
+      </div>
+    </div>
+    <form @submit.prevent="getPresensi">
+      <div class="row justify-content-end pb-5">
+        <div class="col-lg-2">
+          <p style="color: white;">Start Date</p>
+          <input v-model="tgl_awal" type="date" class="form-control form-control-lg">
+        </div>
+        <div class="col-lg-2">
+          <p style="color: white;">End Date</p>
+          <input v-model="tgl_akhir" type="date" class="form-control form-control-lg">
+        </div>
+        <div class="col-lg-1 justify-content-center align-items-end">
+          <button type="submit" class="btn btn-primary mt-5">Cari</button>
+        </div>
+      </div>
+    </form>
+    <div class="container pp">
+      <table border="1" style="width:100%; text-align: center; color: white;" class="border-white">
+        <tr class="b">
+          <th>No</th>
+          <th>Tanggal</th>
+          <th>Nama</th>
+          <th>Keterangan</th>
+          <th>Kelas</th>
+        </tr>
+        <tr v-for="(visitor, i) in visitors" :key="i">
+          <td>{{ i + 1 }}</td>
+          <td>{{ visitor.tanggal }}</td>
+          <td>{{ visitor.siswa.nama }}</td>
+          <td>{{ visitor.keterangan.nama }}</td>
+          <td>{{ visitor.siswa.tingkat }} {{ visitor.jurusan.nama }} {{ visitor.siswa.kelas }}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
 
 </template>
 
@@ -114,7 +114,7 @@ td {
 
 tr.b {
   border-bottom: 2px solid #fff;
-  background: gray;
+  background: rgb(0, 0, 0);
 }
 
 .pp {
