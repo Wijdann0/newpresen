@@ -12,9 +12,9 @@
       </div>
       <div class="col-lg-4 mb-5">
         <nuxt-link to="/laporan" class="text-decoration-none">
-          <div class="card bg-laporanMingguan rounded-5">
+          <div class="card bg-laporanMingguan rounded-5 text-light">
             <div class="card-body d-flex justify-content-center align-items-center">
-              <h2 class="solid">Laporan</h2>
+              <h2 class="">Laporan</h2>
             </div>
           </div>
         </nuxt-link>
@@ -36,7 +36,7 @@
 }
 
 .hei {
-  min-height: 10vmax;
+  min-height: 41vmax;
   background: rgb(26, 26, 26) !important;
 }
 
@@ -50,7 +50,7 @@
 }
 
 .card:hover {
-  background-color: rgb(255, 255, 255);
+  background-color: rgb(9, 82, 141);
   color: black;
   box-shadow: 0 5px #666;
   transform: translateY(4px);
