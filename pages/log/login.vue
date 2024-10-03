@@ -53,16 +53,13 @@ async function log() {
     password: password.value,
   })
 
-
-  if (!error) {
-    navigateTo("/halamanUtama")
+  if (data) {
+    navigateTo('/halamanUtama')
   } else {
-    alert("Password or Email Invalid")
+    alert(error.message)
   }
 }
-
 </script>
-
 
 <style scoped>
 .psh {
