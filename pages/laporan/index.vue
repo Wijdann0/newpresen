@@ -91,23 +91,31 @@ const jurusanOptions = ref([]);
 
 const getPresensi = async () => {
   try {
+    // Ambil tanggal hari ini
+    const today = getTodayDate();
+    console.log("Tanggal hari ini:", today); // Debugging: Tampilkan tanggal yang dikirim
+
+    // Set input tanggal ke hari ini secara otomatis
+    tgl_awal.value = today; 
+
+    // Query untuk mengambil data dari tabel presensi dengan join ke tabel siswa, jurusan, dan keterangan
     let query = supabase
       .from("presensi")
-      .select("*, keterangan(*), siswa(*), jurusan(*)");
+      .select("tanggal, siswa(id, nama, tingkat, kelas), keterangan(nama), jurusan(nama)");
 
-    if (tgl_awal.value) {
-      query = query.gte("tanggal", tgl_awal.value);
-    } else {
-      const today = getTodayDate();
-      query = query.eq("tanggal", today);
-    }
+    // Filter berdasarkan tanggal hari ini
+    query = query.eq("tanggal", today);
 
+    console.log("Query yang dikirim:", query); // Debugging: Tampilkan query
+
+    // Eksekusi query dan tangani hasil atau error
     const { data, error } = await query;
 
     if (error) {
       console.error("Error fetching data:", error);
     } else {
       visitors.value = data || [];
+      console.log("Data fetched:", visitors.value); 
     }
   } catch (error) {
     console.error("Unexpected error:", error);
@@ -123,6 +131,7 @@ const getTodayDate = () => {
 };
 
 const filteredVisitors = computed(() => {
+  console.log("Filtered Visitors:", visitors.value); // Debugging: Tampilkan visitor yang difilter
   return visitors.value.filter((visitor) => {
     const matchTanggal = !tgl_awal.value || visitor.tanggal === tgl_awal.value;
     const matchTingkat = !tingkat.value || visitor.siswa?.tingkat === tingkat.value;
@@ -222,58 +231,12 @@ tr.b {
   body * {
     visibility: hidden;
   }
-
-  table {
+  #content, #content * {
     visibility: visible;
-    width: 100%;
-    border-collapse: collapse;
-    color: black;
   }
-
-  table,
-  th,
-  td {
-    border: 2px solid black;
-    padding: 10px;
-  }
-
-  .pp {
+  #content {
+    position: absolute;
     top: 0;
-    left: 0;
-    width: 100%;
-    padding-bottom: 0;
-  }
-
-  .pp,
-  .pp * {
-    visibility: visible;
-  }
-
-  .bck,
-  .btn-success,
-  .btn-primary,
-  form,
-  .bebas,
-  .row.pt-3 {
-    display: none;
-  }
-}
-
-/* Custom Styles for Responsive Design */
-@media (max-width: 576px) {
-  .pp {
-    padding-bottom: 150px;
-    /* Adjusting bottom padding for small screens */
-  }
-
-  td {
-    font-size: 12px;
-    /* Reduce font size for small screens */
-  }
-
-  .btn {
-    font-size: 14px;
-    /* Adjust button font size */
   }
 }
 </style>

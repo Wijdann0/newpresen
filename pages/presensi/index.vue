@@ -4,9 +4,8 @@
       <div class="col-lg-8 col-md-10 col-sm-12">
         <form @submit.prevent="kirimData">
           <div class="mb-4">
-            <select v-model="form.tingkat" class="jurusan form-control form-control-lg rounded-4 fs-5 text-center"
-              data-bs-toggle="tooltip" data-bs-placement="top" title="Masukan Kelas">
-              <option value="">Kelas</option>
+            <select v-model="form.tingkat" class="jurusan form-control form-control-lg rounded-4 fs-5 text-center">
+              <option value="">Tingkat</option>
               <option value="10">10</option>
               <option value="11">11</option>
               <option value="12">12</option>
@@ -16,17 +15,15 @@
             <div class="row mb-5">
               <div class="col-md-6 mb-3 mb-md-0">
                 <select v-model="form.jurusan" :disabled="form.tingkat === ''"
-                  class="jurusan form-control form-control-lg rounded-4 fs-5 text-center" data-bs-toggle="tooltip"
-                  data-bs-placement="top" title="Masukan Jurusan">
-                  <option value="">Jurusan</option>
+                  class="jurusan form-control form-control-lg rounded-4 fs-5 text-center">
+                  <option value="">JURUSAN</option>
                   <option v-for="(jurus, i) in op" :key="i" :value="jurus.id">{{ jurus.nama }}</option>
                 </select>
               </div>
               <div class="col-md-6">
                 <select @change="cek" v-model="form.kelas"
-                  class="jurusan form-control form-control-lg rounded-4 fs-5 text-center" data-bs-toggle="tooltip"
-                  data-bs-placement="top" title="Masukan Nomor Kelas">
-                  <option value="">No Kelas</option>
+                  class="jurusan form-control form-control-lg rounded-4 fs-5 text-center">
+                  <option value="">KELAS</option>
                   <option value="1">1</option>
                   <option value="2">2</option>
                   <option value="3">3</option>
@@ -35,19 +32,22 @@
               </div>
             </div>
           </div>
-          <div class="row text-white" v-if="form.kelas"> <!-- Only show students if kelas is selected -->
+
+          <!-- Show students and their corresponding keterangan (radio buttons) -->
+          <div class="row" v-if="form.kelas">
             <div class="col-12 d-flex justify-content-center">
-              <div class="w-100 text-center">
-                <h5>Nama</h5>
-                <div v-for="(member, i) in members" :key="i" class="form-check">
-                  <input type="checkbox" :id="'siswa-' + member.id" :value="member.id" v-model="form.siswa"
-                    class="form-check-input" @change="toggleKeterangan(member.id)">
-                  <label :for="'siswa-' + member.id" class="form-check-label">{{ member.nama }}</label>
-                  <div v-if="form.siswa.includes(member.id)">
-                    <h6>Keterangan untuk {{ member.nama }}</h6>
-                    <div v-for="(item, j) in objectives" :key="j" class="form-check">
-                      <input type="checkbox" :id="'keterangan-' + item.id + '-' + member.id" :value="item.id"
-                        v-model="form.siswaKeterangan[member.id]" class="form-check-input">
+              <div class="w-100 text-center text-light">
+                <h5>Nama dan Keterangan</h5>
+                <div v-for="(member, i) in members" :key="i" class="d-flex align-items-center mb-3">
+                  <!-- Student Name -->
+                  <span class="me-3" style="flex: 1; text-align: left;">{{ member.nama }}</span>
+
+                  <!-- Keterangan (Radio Buttons) -->
+                  <div style="flex: 2;">
+                    <div v-for="(item, j) in objectives" :key="j" class="form-check d-inline-block me-2">
+                      <input type="radio" :id="'keterangan-' + item.id + '-' + member.id"
+                        :name="'keterangan-' + member.id" :value="item.id" v-model="form.siswaKeterangan[member.id]"
+                        class="form-check-input">
                       <label :for="'keterangan-' + item.id + '-' + member.id" class="form-check-label">{{ item.nama
                         }}</label>
                     </div>
@@ -55,17 +55,17 @@
                 </div>
               </div>
             </div>
-            <div class="col-12 d-flex justify-content-center pt-5">
-              <button type="submit" class="btn btn-success krm" data-bs-toggle="tooltip" data-bs-placement="top"
-                title="Kirim Presensi">Kirim</button>
+
+            <!-- Submit Button -->
+            <div class="col-12 d-flex justify-content-center">
+              <button type="submit" class="btn btn-success krm">Kirim</button>
             </div>
           </div>
         </form>
       </div>
     </div>
     <nuxt-link to="/halamanUtama">
-      <button type="button" class="btn btn-dark bck mt-5 mb-5 border-white" data-bs-toggle="tooltip"
-        data-bs-placement="top" title="Kembali Ke Halaman Utama">Kembali</button>
+      <button type="button" class="btn btn-dark bck mt-5 mb-5 border-white">Kembali</button>
     </nuxt-link>
   </div>
 </template>
@@ -73,13 +73,11 @@
 <script setup>
 const supabase = useSupabaseClient()
 
-const kelas = ref([])
 const members = ref([])
 const objectives = ref([])
 const op = ref([])
 
 const form = ref({
-  siswa: [],
   siswaKeterangan: {},  // Object to hold keterangan for each siswa
   tingkat: "",
   jurusan: "",
@@ -103,24 +101,11 @@ async function cek(event) {
   }
 }
 
-const toggleKeterangan = (memberId) => {
-  if (!form.value.siswaKeterangan[memberId]) {
-    form.value.siswaKeterangan[memberId] = []
-  }
-}
-
 const getSiswa = async () => {
   const { data, error } = await supabase
     .from('siswa')
     .select('*')
   if (data) members.value = data
-}
-
-const getKelas = async () => {
-  const { data, error } = await supabase
-    .from('siswa')
-    .select('*, kelas')
-  if (data) kelas.value = data
 }
 
 const getKeterangan = async () => {
@@ -130,19 +115,26 @@ const getKeterangan = async () => {
   if (data) objectives.value = data
 }
 
+const getJurusan = async () => {
+  const { data, error } = await supabase
+    .from('jurusan')
+    .select("*")
+  if (data) op.value = data
+}
+
 const kirimData = async () => {
   const entries = []
 
-  form.value.siswa.forEach(siswaId => {
-    const keteranganIds = form.value.siswaKeterangan[siswaId] || []
-    keteranganIds.forEach(keteranganId => {
+  // Iterate through each student and their keterangan
+  for (const [siswaId, keteranganId] of Object.entries(form.value.siswaKeterangan)) {
+    if (keteranganId) {
       entries.push({
         siswa: siswaId,
         keterangan: keteranganId,
         jurusan: form.value.jurusan
       })
-    })
-  })
+    }
+  }
 
   const { error } = await supabase
     .from('presensi')
@@ -151,23 +143,17 @@ const kirimData = async () => {
   if (!error) {
     alert('Presensi berhasil!')
 
-    members.value = members.value.filter(member => !form.value.siswa.includes(member.id))
+    // Remove students that have been assigned keterangan
+    const studentsToRemove = Object.keys(form.value.siswaKeterangan)
+    members.value = members.value.filter(member => !studentsToRemove.includes(String(member.id)))
 
-    form.value.siswa = []
+    // Reset form
     form.value.siswaKeterangan = {}
   }
 }
 
-const getJurusan = async () => {
-  const { data, error } = await supabase
-    .from('jurusan')
-    .select("*")
-  if (data) op.value = data
-}
-
 onMounted(() => {
   getSiswa()
-  getKelas()
   getKeterangan()
   getJurusan()
 })
@@ -184,20 +170,6 @@ onMounted(() => {
   color: white;
   background: rgb(26, 26, 26) !important;
   box-shadow: 10px 10px 0px 2px lightblue;
-  border: 2px solid lightblue;
-}
-
-.jurusan:hover {
-  background-color: rgb(9, 82, 141);
-  color: white;
-  box-shadow: 0 5px #666;
-  transform: translateY(4px);
-}
-
-.nama {
-  color: white;
-  background: rgb(26, 26, 26) !important;
-  box-shadow: 10px 10px 0px 3px lightblue;
   border: 2px solid lightblue;
 }
 
