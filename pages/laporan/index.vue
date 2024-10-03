@@ -15,7 +15,7 @@
     </div>
     <div class="row text-center bebas pb-5">
       <div class="col-12 text-white">
-        <h3>Presensi</h3>
+        <!-- <h3>Presensi</h3> -->
       </div>
     </div>
     <form @submit.prevent="getPresensi">
@@ -46,28 +46,38 @@
         </div>
       </div>
     </form>
+
+    <!-- Konten yang akan di print -->
     <div class="container pp" id="content">
-      <table id="presensiTable" class="table table-bordered text-white">
-        <thead>
-          <tr class="b">
-            <th>No</th>
-            <th>Tanggal</th>
-            <th>Nama</th>
-            <th>Keterangan</th>
-            <th>Kelas</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(visitor, i) in filteredVisitors" :key="i">
-            <td>{{ i + 1 }}</td>
-            <td>{{ visitor.tanggal }}</td>
-            <td>{{ visitor.siswa?.nama || 'Tidak ada data' }}</td>
-            <td>{{ visitor.keterangan?.nama || 'Tidak ada data' }}</td>
-            <td>{{ visitor.siswa?.tingkat || 'N/A' }} {{ visitor.jurusan?.nama || 'N/A' }} {{ visitor.siswa?.kelas ||
-              'N/A' }}</td>
-          </tr>
-        </tbody>
-      </table>
+      <!-- Bagian judul presensi, kelas, dan tanggal -->
+      <div class="text-center mb-5 text-light">
+        <h1>Presensi</h1>
+        <p>Kelas: {{ tingkat }} {{ jurusan }} {{ kelas }}</p>
+        <p>Tanggal: {{ tgl_awal || today }}</p>
+      </div>
+
+      <div class="table-responsive">
+        <table id="presensiTable" class="table table-bordered text-white">
+          <thead>
+            <tr class="b">
+              <th>No</th>
+              <th>Tanggal</th>
+              <th>Nama</th>
+              <th>Keterangan</th>
+              <th>Kelas</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(visitor, i) in filteredVisitors" :key="i">
+              <td>{{ i + 1 }}</td>
+              <td>{{ visitor.tanggal }}</td>
+              <td>{{ visitor.siswa?.nama || 'Tidak ada data' }}</td>
+              <td>{{ visitor.keterangan?.nama || 'Tidak ada data' }}</td>
+              <td>{{ visitor.siswa?.tingkat || 'N/A' }} {{ visitor.jurusan?.nama || 'N/A' }} {{ visitor.siswa?.kelas || 'N/A' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </template>
@@ -77,6 +87,14 @@ import { ref, computed, onMounted } from 'vue';
 import { createClient } from '@supabase/supabase-js';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+
+const getTodayDate = () => {
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1).padStart(2, "0");
+  const dd = String(today.getDate()).padStart(2, "0");
+  return `${yyyy}-${mm}-${dd}`;
+};
 
 const supabaseUrl = 'https://lagwvzegjurpjhjvbwca.supabase.co';
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxhZ3d2emVnanVycGpoanZid2NhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjQwMzMyNTIsImV4cCI6MjAzOTYwOTI1Mn0.XrdQtFfHp4mxuJjtxE810KZnsWIS47wyc5uYY4r_KmQ';
@@ -88,27 +106,22 @@ const tingkat = ref("");
 const jurusan = ref("");
 const kelas = ref("");
 const jurusanOptions = ref([]);
+const today = getTodayDate();
 
 const getPresensi = async () => {
   try {
-    // Ambil tanggal hari ini
-    const today = getTodayDate();
-    console.log("Tanggal hari ini:", today); // Debugging: Tampilkan tanggal yang dikirim
-
-    // Set input tanggal ke hari ini secara otomatis
-    tgl_awal.value = today; 
-
-    // Query untuk mengambil data dari tabel presensi dengan join ke tabel siswa, jurusan, dan keterangan
     let query = supabase
       .from("presensi")
       .select("tanggal, siswa(id, nama, tingkat, kelas), keterangan(nama), jurusan(nama)");
 
-    // Filter berdasarkan tanggal hari ini
-    query = query.eq("tanggal", today);
+    if (tgl_awal.value) {
+      query = query.eq("tanggal", tgl_awal.value);
+    } else {
+      query = query.eq("tanggal", today);
+    }
 
-    console.log("Query yang dikirim:", query); // Debugging: Tampilkan query
+    console.log("Query yang dikirim:", query);
 
-    // Eksekusi query dan tangani hasil atau error
     const { data, error } = await query;
 
     if (error) {
@@ -122,16 +135,7 @@ const getPresensi = async () => {
   }
 };
 
-const getTodayDate = () => {
-  const today = new Date();
-  const yyyy = today.getFullYear();
-  const mm = String(today.getMonth() + 1).padStart(2, "0");
-  const dd = String(today.getDate()).padStart(2, "0");
-  return `${yyyy}-${mm}-${dd}`;
-};
-
 const filteredVisitors = computed(() => {
-  console.log("Filtered Visitors:", visitors.value); // Debugging: Tampilkan visitor yang difilter
   return visitors.value.filter((visitor) => {
     const matchTanggal = !tgl_awal.value || visitor.tanggal === tgl_awal.value;
     const matchTingkat = !tingkat.value || visitor.siswa?.tingkat === tingkat.value;
@@ -179,9 +183,7 @@ const downloadPDF = () => {
 
 const getJurusanOptions = async () => {
   try {
-    const { data, error } = await supabase
-      .from("jurusan")
-      .select("*");
+    const { data, error } = await supabase.from("jurusan").select("*");
 
     if (error) {
       console.error("Error fetching jurusan data:", error);
@@ -222,21 +224,79 @@ tr.b {
   background: rgb(0, 0, 0);
 }
 
-.pp {
-  padding-bottom: 270px;
+.table-responsive {
+  overflow-x: auto;
 }
 
-/* Style for printing */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 15px;
+  }
+}
 @media print {
   body * {
     visibility: hidden;
   }
+
   #content, #content * {
     visibility: visible;
   }
+
+  form, .btn, input, select, #navbar, .judul-non-print, h3 {
+    display: none !important;
+  }
+
+  th:nth-child(2), td:nth-child(2) {
+    display: none !important;
+  }
+
+  h1, p {
+    color: black;
+    text-align: center;
+  }
+
   #content {
     position: absolute;
     top: 0;
+    left: 0;
+    right: 0;
+    padding: 20px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    border: 2px solid black;
+  }
+
+  th, td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: center;
+  }
+
+  thead th {
+    border-bottom: 2px solid black;
+    background-color: #f2f2f2;
+  }
+
+  th {
+    background-color: #f2f2f2;
+  }
+}
+
+@media (max-width: 768px) {
+  .bebas {
+    padding-top: 20px;
+  }
+
+  .form-control-lg {
+    font-size: 14px; /* Sesuaikan ukuran font pada perangkat kecil */
+  }
+
+  .btn {
+    padding: 10px; /* Sesuaikan padding tombol */
   }
 }
 </style>

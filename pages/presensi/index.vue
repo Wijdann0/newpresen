@@ -37,7 +37,7 @@
           <div class="row" v-if="form.kelas">
             <div class="col-12 d-flex justify-content-center">
               <div class="w-100 text-center text-light">
-                <h5>Nama dan Keterangan</h5>
+                <h5 class="pb-5">Nama dan Keterangan</h5>
                 <div v-for="(member, i) in members" :key="i" class="d-flex align-items-center mb-3">
                   <!-- Student Name -->
                   <span class="me-3" style="flex: 1; text-align: left;">{{ member.nama }}</span>
@@ -48,8 +48,7 @@
                       <input type="radio" :id="'keterangan-' + item.id + '-' + member.id"
                         :name="'keterangan-' + member.id" :value="item.id" v-model="form.siswaKeterangan[member.id]"
                         class="form-check-input">
-                      <label :for="'keterangan-' + item.id + '-' + member.id" class="form-check-label">{{ item.nama
-                        }}</label>
+                      <label :for="'keterangan-' + item.id + '-' + member.id" class="form-check-label">{{ item.nama }}</label>
                     </div>
                   </div>
                 </div>
@@ -57,7 +56,7 @@
             </div>
 
             <!-- Submit Button -->
-            <div class="col-12 d-flex justify-content-center">
+            <div class="col-12 d-flex justify-content-center pt-5">
               <button type="submit" class="btn btn-success krm">Kirim</button>
             </div>
           </div>
@@ -93,11 +92,12 @@ async function cek(event) {
       .eq('tingkat', form.value.tingkat)
       .eq('jurusan', form.value.jurusan)
       .eq('kelas', form.value.kelas)
+      .order('nama', { ascending: true })
     if (data) {
       members.value = data
     }
   } else {
-    members.value = [] // Clear members if kelas is not selected
+    members.value = [] 
   }
 }
 
@@ -160,9 +160,20 @@ onMounted(() => {
 </script>
 
 <style scoped>
+html,
+body {
+  height: 100%; /* Pastikan html dan body mengisi tinggi layar */
+  margin: 0; /* Menghapus margin default */
+  padding: 0; /* Menghapus padding default */
+}
+
 .container-fluid {
-  background: rgb(26, 26, 26);
-  min-height: 90vh;
+  background: rgb(26, 26, 26); /* Latar belakang untuk container */
+  min-height: 100vh; /* Mengisi 100% dari tinggi viewport */
+  display: flex;
+  flex-direction: column; /* Memungkinkan konten diatur secara vertikal */
+  justify-content: center; /* Menyusun konten di tengah */
+  padding: 0; /* Menghilangkan padding untuk container */
 }
 
 .jurusan {
@@ -189,11 +200,12 @@ onMounted(() => {
 
   .jurusan,
   .nama {
-    font-size: 16px;
+    font-size: 16px; /* Menyesuaikan ukuran font untuk perangkat kecil */
   }
 
   .container-fluid {
-    padding: 10px;
+    padding: 10px; /* Mengatur padding untuk perangkat kecil */
+    min-height: auto; /* Menghindari batasan tinggi */
   }
 }
 </style>
