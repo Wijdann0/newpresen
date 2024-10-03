@@ -48,7 +48,8 @@
                       <input type="radio" :id="'keterangan-' + item.id + '-' + member.id"
                         :name="'keterangan-' + member.id" :value="item.id" v-model="form.siswaKeterangan[member.id]"
                         class="form-check-input">
-                      <label :for="'keterangan-' + item.id + '-' + member.id" class="form-check-label">{{ item.nama }}</label>
+                      <label :for="'keterangan-' + item.id + '-' + member.id" class="form-check-label">{{ item.nama
+                        }}</label>
                     </div>
                   </div>
                 </div>
@@ -56,7 +57,7 @@
             </div>
 
             <!-- Submit Button -->
-            <div class="col-12 d-flex justify-content-center pt-5">
+            <div class="col-12 d-flex justify-content-center ">
               <button type="submit" class="btn btn-success krm">Kirim</button>
             </div>
           </div>
@@ -160,20 +161,9 @@ onMounted(() => {
 </script>
 
 <style scoped>
-html,
-body {
-  height: 100%; /* Pastikan html dan body mengisi tinggi layar */
-  margin: 0; /* Menghapus margin default */
-  padding: 0; /* Menghapus padding default */
-}
-
 .container-fluid {
-  background: rgb(26, 26, 26); /* Latar belakang untuk container */
-  min-height: 100vh; /* Mengisi 100% dari tinggi viewport */
-  display: flex;
-  flex-direction: column; /* Memungkinkan konten diatur secara vertikal */
-  justify-content: center; /* Menyusun konten di tengah */
-  padding: 0; /* Menghilangkan padding untuk container */
+  background: rgb(26, 26, 26);
+  min-height: 90vh;
 }
 
 .jurusan {
@@ -200,12 +190,11 @@ body {
 
   .jurusan,
   .nama {
-    font-size: 16px; /* Menyesuaikan ukuran font untuk perangkat kecil */
+    font-size: 16px;
   }
 
   .container-fluid {
-    padding: 10px; /* Mengatur padding untuk perangkat kecil */
-    min-height: auto; /* Menghindari batasan tinggi */
+    padding: 10px;
   }
 }
 </style>

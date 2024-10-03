@@ -26,7 +26,7 @@
         </div>
         <div class="col-12 col-md-3 mb-2">
           <p style="color: white; text-align: center;">Kelas</p>
-          <input v-model="tingkat" type="text" class="form-control form-control-lg" placeholder="Tingkat">
+          <input v-model="tingkat" type="number" class="form-control form-control-lg" placeholder="Tingkat">
         </div>
         <div class="col-12 col-md-3 mb-2">
           <p style="color: white; text-align: center;">Jurusan</p>
@@ -39,7 +39,7 @@
         </div>
         <div class="col-12 col-md-3 mb-2">
           <p style="color: white; text-align: center;">No Kelas</p>
-          <input v-model="kelas" type="text" class="form-control form-control-lg" placeholder="Kelas">
+          <input v-model="kelas" type="number" class="form-control form-control-lg" placeholder="Kelas">
         </div>
         <div class="col-12 col-md-3 justify-content-center align-items-end mb-2">
           <button type="submit" class="btn btn-primary mt-5 w-100">Cari</button>
