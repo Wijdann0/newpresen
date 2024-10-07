@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid hei">
-    <div class="row my-5 d-flex justify-content-center mt-3 atas">
+    <div class="row my-5 d-flex justify-content-around mt-3 atas">
       <div class="col-12 col-sm-6 col-lg-4 mb-5">
         <nuxt-link to="/presensi" class="text-decoration-none">
           <div class="card bg-isiPresensi rounded-5 text-light mx-2"> <!-- Tambahkan mx-2 -->
@@ -29,6 +29,7 @@
     </div>
   </div>
 </template>
+
 
 <style scoped>
 * {

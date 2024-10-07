@@ -53,10 +53,10 @@ async function log() {
     password: password.value,
   })
 
-  if (data) {
+  if (!error) {
     navigateTo('/halamanUtama')
   } else {
-    alert(error.message)
+    alert('Email or Password Invalid')
   }
 }
 </script>
