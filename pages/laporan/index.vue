@@ -42,7 +42,7 @@
 
     <div class="container pp" id="content">
       <div class="text-center mb-5 text-light">
-        <h1>Presensi</h1>
+        <h1>Presensi Harian</h1>
         <p>Kelas: {{ tingkat }} {{ jurusan }} {{ kelas }}</p>
         <p>Tanggal: {{ tgl_awal || today }}</p>
       </div>
