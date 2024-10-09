@@ -28,7 +28,7 @@
       <div class="col-6 col-sm-3 mb-2">
         <p class="text-white text-center">Jurusan</p>
         <select v-model="jurusan" class="form-control form-control-lg">
-          <option value="">Pilih Jurusan</option>
+          <option value="" disabled selected>Pilih Jurusan</option>
           <option v-for="option in jurusanOptions" :key="option.id" :value="option.nama">
             {{ option.nama }}
           </option>
