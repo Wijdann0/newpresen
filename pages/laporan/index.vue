@@ -1,18 +1,18 @@
 <template>
   <div class="container-fluid atas mt-3">
     <div class="row pt-3" id="navbar">
-      <div class="col-6 col-md-3 mb-2">
+      <div class="col-6 col-sm-3 mb-2">
         <nuxt-link to="/halamanUtama">
-          <button class="btn btn-dark bck m-2 border-white w-100">Kembali</button>
+          <button class="btn btn-dark bck mb-5 border-white w-100 h-40">Kembali</button>
         </nuxt-link>
       </div>
     </div>
-    <div class="row pt-3" id="navbar">
+    <div class="row" id="navbar">
       <div class="col-6 col-sm-3 mb-2">
-        <button class="btn btn-success m-2 w-100" @click="printPage">Print</button>
+        <button class="btn btn-success w-100" @click="printPage">Print</button>
       </div>
       <div class="col-6 col-sm-3 mb-2">
-        <button class="btn btn-info m-2 w-100" @click="downloadPDF">Download PDF</button>
+        <button class="btn btn-info w-100" @click="downloadPDF">Download PDF</button>
       </div>
     </div>
 
@@ -46,27 +46,28 @@
         <p>Kelas: {{ tingkat }} {{ jurusan }} {{ kelas }}</p>
         <p>Tanggal: {{ tgl_awal || today }}</p>
       </div>
-
-      <table id="presensiTable" class="table table-bordered text-white">
-        <thead>
-          <tr class="b">
-            <th>No</th>
-            <th>Tanggal</th>
-            <th>Nama</th>
-            <th>Keterangan</th>
-            <th>Kelas</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(visitor, i) in filteredVisitors" :key="i">
-            <td>{{ i + 1 }}</td>
-            <td>{{ visitor.tanggal }}</td>
-            <td>{{ visitor.siswa?.nama || 'Tidak ada data' }}</td>
-            <td>{{ visitor.keterangan?.nama || 'Tidak ada data' }}</td>
-            <td>{{ visitor.siswa?.tingkat || 'N/A' }} {{ visitor.jurusan?.nama || 'N/A' }} {{ visitor.siswa?.kelas || 'N/A' }}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="table-container">
+        <table id="presensiTable" class="table table-bordered text-white">
+          <thead>
+            <tr class="b">
+              <th>No</th>
+              <th>Tanggal</th>
+              <th>Nama</th>
+              <th>Keterangan</th>
+              <th>Kelas</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(visitor, i) in filteredVisitors" :key="i">
+              <td>{{ i + 1 }}</td>
+              <td>{{ visitor.tanggal }}</td>
+              <td>{{ visitor.siswa?.nama || 'Tidak ada data' }}</td>
+              <td>{{ visitor.keterangan?.nama || 'Tidak ada data' }}</td>
+              <td>{{ visitor.siswa?.tingkat || 'N/A' }} {{ visitor.jurusan?.nama || 'N/A' }} {{ visitor.siswa?.kelas || 'N/A' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </template>
@@ -233,26 +234,67 @@ html, body {
   padding-left: 0; /* Menghapus padding di sisi kolom */
 }
 
-.table {
-  padding-bottom: 100px; /* Atur padding bawah tabel */
-  max-width: 100%; /* Pastikan tabel tidak meluap */
-  overflow: hidden; /* Menghindari meluap */
+/* Untuk memastikan tabel bisa discroll jika tidak cukup ruang */
+.table-container {
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
 }
 
-.text-white {
-  color: white; /* Mengatur warna teks menjadi putih */
+table {
+  width: 100%;
+  border-collapse: collapse;
 }
 
-.b {
-  background-color: #343a40; /* Atur warna latar belakang header tabel */
+th, td {
+  text-align: left;
+  padding: 8px;
+  white-space: nowrap; /* Hindari wrap teks */
 }
-/* Menghindari overflow pada elemen tertentu */
-input[type="date"],
-input[type="text"],
-select {
-  width: 100%; /* Pastikan input dan select tidak meluap */
-  max-width: 100%; 
+
+thead {
+  background-color: #333; /* Warna background header tabel */
+  color: #fff; /* Warna teks header */
 }
+
+tbody tr:nth-child(even) {
+  background-color: #2c2c2c; /* Warna latar untuk baris genap */
+}
+
+tbody tr:nth-child(odd) {
+  background-color: #1a1a1a; /* Warna latar untuk baris ganjil */
+}
+
+/* Responsif untuk perangkat mobile */
+@media (max-width: 768px) {
+  /* Mengecilkan font di layar kecil */
+  th, td {
+    font-size: 12px; /* Ukuran font lebih kecil */
+    padding: 6px; /* Padding lebih kecil */
+  }
+
+  /* Opsional: mengecilkan tabel lebih jauh untuk layar yang sangat kecil */
+  table {
+    font-size: 0.9rem;
+  }
+  
+  /* Jika tabel terlalu lebar, tambahkan overflow scroll */
+  .table-container {
+    overflow-x: scroll;
+  }
+}
+
+/* Responsif untuk layar yang sangat kecil (max-width: 480px) */
+@media (max-width: 480px) {
+  th, td {
+    font-size: 10px; /* Ukuran font lebih kecil */
+    padding: 4px; /* Padding lebih kecil */
+  }
+
+  table {
+    font-size: 0.8rem; /* Ukuran tabel lebih kecil */
+  }
+}
+
 
 @media print {
   body * {
