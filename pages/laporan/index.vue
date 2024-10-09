@@ -296,6 +296,20 @@ tbody tr:nth-child(odd) {
 }
 
 
+@media (max-width :768px) {
+    input::placeholder, option::placeholder{
+      font-size: 20px;
+    }
+}
+
+@media (max-width : 480px){
+  input::placeholder, option::placeholder{
+    font-size: 16px;
+    justify-content: center
+  }
+}
+
+
 @media print {
   body * {
     visibility: hidden; /* Sembunyikan semua elemen */
