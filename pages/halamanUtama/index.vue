@@ -19,6 +19,17 @@
           </div>
         </nuxt-link>
       </div>
+      <div class="row justify-content-center">
+        <div class="col-12 col-sm-6 col-lg-4 mb-5">
+        <nuxt-link to="/laporan/bulanan/" class="text-decoration-none">
+          <div class="card bg-laporanMingguan rounded-5 text-light mx-2"> <!-- Tambahkan mx-2 -->
+            <div class="card-body d-flex justify-content-center align-items-center">
+              <h2 class="">Laporan Bulanan</h2>
+            </div>
+          </div>
+        </nuxt-link>
+      </div>
+      </div>
     </div>
     <div class="row pb-3">
       <div class="col text-center p-3">
