@@ -18,7 +18,7 @@
   
       <div class="row d-flex justify-content-center pb-5" id="filter">
         <div class="col-6 col-sm-3 mb-2">
-          <p class="text-white text-center">Bulan</p>
+          <p class="text-white text-center">Tanggal</p>
           <input v-model="tgl_awal" type="month" class="form-control form-control-lg">
         </div>
         <div class="col-6 col-sm-3 mb-2">
@@ -75,6 +75,25 @@
           </table>
         </div>
       </div>
+
+      <div class="signature-section">
+          <div class="row text-white">
+            <div class="col-6 text-center">
+              <p>Mengetahui</p>
+              <p>Kepala Sekolah</p>
+              <br><br>
+              <p>(KURNIAWAN, S.Pd., M.Pd.)</p>
+              <p>NIP 19720809199271002</p>
+            </div>
+            <div class="col-6 text-center">
+              <p>Mengetahui</p>
+              <p>Wali Kelas</p>
+              <br><br>
+              <p>(...................................................)</p>
+              <p>NIP</p>
+            </div>
+          </div>
+        </div>
     </div>
   </template>
   
@@ -400,9 +419,9 @@
   
     table {
       width: 100%;
-      border-collapse: collapse;
+      /* border-collapse: collapse; */
       margin-top: 20px;
-      border: 2px solid black;
+      border: 1px solid black;
     }
   
     th, td {
@@ -421,7 +440,19 @@
       text-align: center;
     }
   }
-  
+  .signature-section {
+  margin-top: 60px;
+  font-size: 14px;
+}
+
+.signature-section .row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.signature-section .col-6 {
+  width: 45%;
+}
   
   </style>
   

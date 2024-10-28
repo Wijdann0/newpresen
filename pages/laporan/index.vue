@@ -42,7 +42,7 @@
 
     <div class="container pp" id="content">
       <div class="text-center mb-5 text-light">
-        <h1 style="font-wight:bold;" >Presensi Harian</h1>
+        <h1>Presensi Harian</h1>
         <p>Kelas: {{ tingkat }} {{ jurusan }} {{ kelas }}</p>
         <p>Tanggal: {{ tgl_awal || today }}</p>
       </div>
@@ -70,6 +70,24 @@
         </table>
       </div>
     </div>
+      <div class="signature-section">
+          <div class="row text-white">
+            <div class="col-6 text-center">
+              <p>Mengetahui</p>
+              <p>Kepala Sekolah</p>
+              <br><br>
+              <p>(KURNIAWAN, S.Pd., M.Pd.)</p>
+              <p>NIP 19720809199271002</p>
+            </div>
+            <div class="col-6 text-center">
+              <p>Mengetahui</p>
+              <p>Wali Kelas</p>
+              <br><br>
+              <p>(...................................................)</p>
+              <p>NIP</p>
+            </div>
+          </div>
+        </div>
   </div>
 </template>
 
@@ -410,4 +428,18 @@ tbody tr:nth-child(odd) {
     /* Atur warna dan perataan teks */
   }
 }
+.signature-section {
+  margin-top: 60px;
+  font-size: 14px;
+}
+
+.signature-section .row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.signature-section .col-6 {
+  width: 45%;
+}
+
 </style>
