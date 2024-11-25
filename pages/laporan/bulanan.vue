@@ -18,7 +18,7 @@
   
       <div class="row d-flex justify-content-center pb-5" id="filter">
         <div class="col-6 col-sm-3 mb-2">
-          <p class="text-white text-center">Tanggal</p>
+          <p class="text-white text-center">Bulan</p>
           <input v-model="tgl_awal" type="month" class="form-control form-control-lg">
         </div>
         <div class="col-6 col-sm-3 mb-2">
