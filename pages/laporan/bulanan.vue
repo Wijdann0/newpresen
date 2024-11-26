@@ -23,7 +23,12 @@
         </div>
         <div class="col-6 col-sm-3 mb-2">
           <p class="text-white text-center">Kelas</p>
-          <input v-model="tingkat" type="text" class="form-control form-control-lg" placeholder="Tingkat">
+          <select v-model="tingkat" class="form-control form-control-lg">
+            <option value="" disabled selected>Pilih Tingkat</option>
+            <option v-for="option in tingkatOptions" :key="option" :value="option">
+              {{ option }}
+            </option>
+          </select>
         </div>
         <div class="col-6 col-sm-3 mb-2">
           <p class="text-white text-center">Jurusan</p>
@@ -36,7 +41,12 @@
         </div>
         <div class="col-6 col-sm-3 mb-2">
           <p class="text-white text-center">No Kelas</p>
-          <input v-model="kelas" type="text" class="form-control form-control-lg" placeholder="Kelas">
+          <select v-model="kelas" class="form-control form-control-lg">
+            <option value="" disabled selected>Pilih Kelas</option>
+            <option v-for="option in kelasOptions" :key="option" :value="option">
+              {{ option }}
+            </option>
+          </select>
         </div>
       </div>
   
@@ -52,24 +62,24 @@
               <tr class="b">
                 <th>No</th>
                 <th>Nama</th>
+                <th>H</th>
                 <th>S</th>
                 <th>I</th>
                 <th>A</th>
-                <th>Jumlah</th>
+                <!-- <th>Jumlah S,I,A</th> -->
                 <th>Kelas</th>
-                <th>Total Hadir Pada Bulan Ini</th> <!-- Kolom Total Hari -->
               </tr>
             </thead>
             <tbody>
               <tr v-for="(visitor, i) in groupedVisitors" :key="i">
                 <td>{{ i + 1 }}</td>
                 <td>{{ visitor.nama }}</td>
+                <td>{{ visitor.hadir }}</td>
                 <td>{{ visitor.sakit }}</td>
                 <td>{{ visitor.izin }}</td>
                 <td>{{ visitor.alfa }}</td>
-                <td>{{ visitor.total }}</td>
+                <!-- <td>{{ visitor.total }}</td> -->
                 <td>{{ visitor.keterangan }}</td>
-                <td>{{ visitor.totalHari }}</td> 
               </tr>
             </tbody>
           </table>
@@ -103,13 +113,13 @@
   import jsPDF from 'jspdf';
   import html2canvas from 'html2canvas';
   
-  const getTodayDate = () => {
-    const today = new Date();
-    const yyyy = today.getFullYear();
-    const mm = String(today.getMonth() + 1).padStart(2, "0");
-    const dd = String(today.getDate()).padStart(2, "0");
-    return `${yyyy}-${mm}-${dd}`;
-  };
+  const getCurrentMonth = () => {
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1).padStart(2, "0");
+  return `${yyyy}-${mm}`; // Format YYYY-MM
+};
+
   
   const getDaysInMonth = (year, month) => {
     return new Date(year, month, 0).getDate(); // Mendapatkan jumlah hari dalam bulan
@@ -125,7 +135,10 @@
   const jurusan = ref("");
   const kelas = ref("");
   const jurusanOptions = ref([]);
-  const today = getTodayDate();
+  const today = getCurrentMonth();
+
+  const tingkatOptions = ["10", "11", "12"];
+  const kelasOptions = ["1", "2", "3", "4"]; 
   
   const getPresensi = async (tanggal = today) => {
     try {
@@ -156,9 +169,11 @@
   
   
   onMounted(() => {
-    getPresensi();
-    getJurusanOptions();
-  });
+  tgl_awal.value = getCurrentMonth(); // Set default ke bulan saat ini
+  getPresensi(tgl_awal.value); // Fetch data sesuai bulan saat ini
+  getJurusanOptions();
+});
+
   
   watch(tgl_awal, (newDate) => {
     if (newDate) {
@@ -180,44 +195,46 @@
     });
   });
   
-  // Kelompokkan pengunjung setelah filter diterapkan
   const groupedVisitors = computed(() => {
-    const result = {};
-    filteredVisitors.value.forEach((visitor) => {
-      const nama = visitor.siswa?.nama || "Tidak ada data";
-      const year = tgl_awal.value.split("-")[0];
-      const month = parseInt(tgl_awal.value.split("-")[1]);
-  
-      if (!result[nama]) {
-        result[nama] = {
-          nama,
-          sakit: 0,
-          izin: 0,
-          alfa: 0,
-          total: 0,
-          totalHari: getDaysInMonth(year, month), // Menghitung total hari dalam bulan
-          keterangan: visitor.siswa?.tingkat + ' ' + visitor.jurusan?.nama + ' ' + visitor.siswa?.kelas
-        };
-      }
-  
-      if (visitor.keterangan?.nama === 'Sakit') {
-        result[nama].sakit += 1;
-      } else if (visitor.keterangan?.nama === 'Izin') {
-        result[nama].izin += 1;
-      } else if (visitor.keterangan?.nama === 'Alpa') {
-        result[nama].alfa += 1;
-      }
-  
-      result[nama].total = result[nama].sakit + result[nama].izin + result[nama].alfa;
-    });
-  
-    // Menghitung total hari yang dikurangi dengan jumlah sakit, izin, dan alfa
-    Object.values(result).forEach((visitor) => {
-      visitor.totalHari -= visitor.total;
-    });
-  
-    return Object.values(result).sort((a, b) => a.nama.localeCompare(b.nama));
+  const result = {};
+  filteredVisitors.value.forEach((visitor) => {
+    const nama = visitor.siswa?.nama || "Tidak ada data";
+    const year = tgl_awal.value.split("-")[0];
+    const month = parseInt(tgl_awal.value.split("-")[1]);
+
+    if (!result[nama]) {
+      result[nama] = {
+        nama,
+        hadir: 0, // Tambahkan hitungan hadir
+        sakit: 0,
+        izin: 0,
+        alfa: 0,
+        total: 0,
+        keterangan: visitor.siswa?.tingkat + " " + visitor.jurusan?.nama + " " + visitor.siswa?.kelas,
+      };
+    }
+
+    if (visitor.keterangan?.nama === "Hadir") {
+      result[nama].hadir += 1; // Hitung jumlah kehadiran
+    } else if (visitor.keterangan?.nama === "Sakit") {
+      result[nama].sakit += 1;
+    } else if (visitor.keterangan?.nama === "Izin") {
+      result[nama].izin += 1;
+    } else if (visitor.keterangan?.nama === "Alpa") {
+      result[nama].alfa += 1;
+    }
+
+    result[nama].total = result[nama].sakit + result[nama].izin + result[nama].alfa;
   });
+
+  // Menghitung total hari yang dikurangi dengan jumlah sakit, izin, dan alfa
+  Object.values(result).forEach((visitor) => {
+    visitor.totalHari -= visitor.total;
+  });
+
+  return Object.values(result).sort((a, b) => a.nama.localeCompare(b.nama));
+});
+
   
   const printPage = () => {
     window.print();
@@ -453,6 +470,7 @@
 .signature-section .col-6 {
   width: 45%;
 }
+
   
   </style>
   
