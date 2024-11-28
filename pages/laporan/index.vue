@@ -22,8 +22,13 @@
         <input v-model="tgl_awal" type="date" class="form-control form-control-lg">
       </div>
       <div class="col-6 col-sm-3 mb-2">
-        <p class="text-white text-center">Kelas</p>
-        <input v-model="tingkat" type="text" class="form-control form-control-lg" placeholder="Tingkat">
+          <p class="text-white text-center">Kelas</p>
+          <select v-model="tingkat" class="form-control form-control-lg">
+            <option value="" disabled selected>Pilih Tingkat</option>
+            <option v-for="option in tingkatOptions" :key="option" :value="option">
+              {{ option }}
+            </option>
+          </select>
       </div>
       <div class="col-6 col-sm-3 mb-2">
         <p class="text-white text-center">Jurusan</p>
@@ -35,8 +40,13 @@
         </select>
       </div>
       <div class="col-6 col-sm-3 mb-2">
-        <p class="text-white text-center">No Kelas</p>
-        <input v-model="kelas" type="text" class="form-control form-control-lg" placeholder="Kelas">
+          <p class="text-white text-center">No Kelas</p>
+          <select v-model="kelas" class="form-control form-control-lg">
+            <option value="" disabled selected>Pilih Kelas</option>
+            <option v-for="option in kelasOptions" :key="option" :value="option">
+              {{ option }}
+            </option>
+          </select>
       </div>
     </div>
 
@@ -116,6 +126,9 @@ const jurusan = ref("");
 const kelas = ref("");
 const jurusanOptions = ref([]);
 const today = getTodayDate();
+
+const tingkatOptions = ["10", "11", "12"];
+const kelasOptions = ["1", "2", "3", "4"]; 
 
 
 const getPresensi = async (tanggal = today) => {
